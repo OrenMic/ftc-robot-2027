@@ -35,14 +35,11 @@ public class ShootingInMotion {
     BackgroundProcess.add(() -> {
       Logger.recordOutput(name + "/angleToHUb",
           DriveUtil.getAngleToPose(ShootingUtil.getVirtualHubTargetPose()));
-      Logger.recordOutput(name + "/angleToDeliveryLine",
-          DriveUtil.getAngleToPose(ShootingUtil.getVirtualDeliveryTargetPose()));
 
     });
   }
 
   public static final Tof hubTof = new Tof(ShootingUtil::getDistanceToHub);
-  public static final Tof deliveryTof = new Tof(ShootingUtil::getDistanceToDeliveryLine);
 
   static {
 
@@ -58,12 +55,7 @@ public class ShootingInMotion {
     // hubTof.put(4.0942, 1.49); //
     hubTof.put(4.228813, 1.51); //
     hubTof.put(4.93482, 1.139); //
-    hubTof.put(5.21491, 1.6); //2
-
-    deliveryTof.put(2.0, 0.47);
-    // deliveryTof.put(2.5, 1.);
-    deliveryTof.put(3.0, 0.74);
-    // deliveryTof.put(3.5, 1.7);
+    hubTof.put(5.21491, 1.6); // 2
 
   }
 

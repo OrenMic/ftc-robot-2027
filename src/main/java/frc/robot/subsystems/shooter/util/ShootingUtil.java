@@ -1,6 +1,5 @@
 package frc.robot.subsystems.shooter.util;
 
-import static miscar.util.AllianceUtil.isRedAlliance;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
@@ -14,7 +13,6 @@ import frc.robot.subsystems.drive.util.DriveUtil;
 import frc.robot.subsystems.shooter.shootingModel.ShootingInMotion;
 import frc.robot.subsystems.shooter.shootingModel.ShootingInMotion.Tof;
 import frc.robot.subsystems.shooter.shootingModel.SweetSpots;
-import frc.robot.util.Bounds.FlipAxis;
 import frc.robot.util.FieldConstants;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.LoggedTunableNumber;
@@ -34,12 +32,6 @@ public class ShootingUtil {
                 .getDistance(getVirtualHubTargetPose());
     }
 
-    public static double getDistanceToVirtualDeliveryLine() {
-
-        return Drive.getInstance().getPose().getTranslation()
-                .getDistance(getVirtualDeliveryTargetPose());
-    }
-
     public static Pose2d getClosestShootingPose() {
 
         return getClosestShootingPoseFrom(Drive.getInstance().getPose().getTranslation());
@@ -48,47 +40,24 @@ public class ShootingUtil {
     public static Pose2d getClosestShootingPoseFrom(Translation2d pose) {
         Rotation2d angleToHub = getAngleToHubFrom(pose);
         double optimalDistance = SweetSpots.hubSweetSpots
-                .getOptimalDistance(FieldConstants.getHubPose().getDistance(pose));
+                .getOptimalDistance(FieldConstants.getHivePose().getDistance(pose));
         Translation2d wantedSpot =
-                FieldConstants.getHubPose().minus(new Translation2d(optimalDistance, angleToHub));
-        // update shooting spot based on allowed areas
-        wantedSpot = getClosestAllowedShootingPoseFrom(wantedSpot);
+                FieldConstants.getHivePose().minus(new Translation2d(optimalDistance, angleToHub));
         angleToHub = getAngleToHubFrom(wantedSpot);
         return new Pose2d(wantedSpot, angleToHub);
     }
 
     public static Rotation2d getAngleToHubFrom(Translation2d pose) {
-        Translation2d v = FieldConstants.getHubPose();
+        Translation2d v = FieldConstants.getHivePose();
         Translation2d u = pose;
         Rotation2d angleToHub = new Rotation2d(Math.atan2(v.minus(u).getY(), v.minus(u).getX()));
 
         return angleToHub;
     }
 
-    private static Translation2d getClosestAllowedShootingPoseFrom(Translation2d pose) {
-        Translation2d topTrench = FieldConstants.getLeftTrench();
-        Translation2d bottomTrench = FieldConstants.getRightTrench();
-        Translation2d offset = new Translation2d(1, 0);
-        if (AllianceUtil.isRedAlliance()
-                && pose.minus(offset).getX() < FieldConstants.getDeliveryLine()) {
-            Translation2d closestTrench =
-                    pose.getDistance(topTrench) > pose.getDistance(bottomTrench) ? bottomTrench
-                            : topTrench;
-            pose = closestTrench.plus(offset);
-        } else if (!AllianceUtil.isRedAlliance()
-                && pose.plus(offset).getX() > FieldConstants.getDeliveryLine()) {
-            Translation2d closestTrench =
-                    pose.getDistance(topTrench) > pose.getDistance(bottomTrench) ? bottomTrench
-                            : topTrench;
-            pose = closestTrench.minus(offset);
-        }
-
-        return pose;
-    }
-
 
     public static double getDistanceToHub() {
-        return FieldConstants.getHubPose()
+        return FieldConstants.getHivePose()
                 .getDistance(Drive.getInstance().getPose().getTranslation());
     }
 
@@ -101,18 +70,8 @@ public class ShootingUtil {
         return AllianceUtil.isRedAlliance() ? Rotation2d.kZero : Rotation2d.k180deg;
     }
 
-    public static double getDistanceToDeliveryLine() {
-        return Math.abs(FieldConstants.getDeliveryLine() - Drive.getInstance().getPose().getX());
-    }
-
     public static Translation2d getVirtualHubTargetPose() {
-        return getVirtualTargetPose(FieldConstants.getHubPose(), ShootingInMotion.hubTof);
-    }
-
-    public static Translation2d getVirtualDeliveryTargetPose() {
-        return getVirtualTargetPose(
-                FieldConstants.getDeliveryLinePose(Drive.getInstance().getPose().getY()),
-                ShootingInMotion.deliveryTof).withY(Drive.getInstance().getPose().getY());
+        return getVirtualTargetPose(FieldConstants.getHivePose(), ShootingInMotion.hubTof);
     }
 
     public static Translation2d getVirtualTargetPose(Translation2d originalTarget,
@@ -155,43 +114,4 @@ public class ShootingUtil {
                 DriveUtil.getAngleToPose(getVirtualHubTargetPose()));
         return DriveUtil.getAngleToPose(getVirtualHubTargetPose());
     }
-
-    public static Rotation2d getAngleToVirtualDeliveryLine() {
-        Logger.recordOutput("ShootingInMotion" + "/angleToDeliveryLine",
-                DriveUtil.getAngleToPose(getVirtualDeliveryTargetPose()));
-        return DriveUtil.getAngleToPose(getVirtualDeliveryTargetPose());
-    }
-
-    public static boolean canDeliver() {
-
-        double robotY = Drive.getInstance().getPose().getY();
-        double hubY = FieldConstants.getHubPose().getY();
-        double hubWidth = FieldConstants.hubWidth;
-        double lowYLimit = hubY - (hubWidth / 2.0);
-        double highYLimit = hubY + (hubWidth / 2.0);
-
-        boolean isBlockedByTrench = isRedAlliance()
-                ? FieldConstants.blueTrenchBound.containsFlipped(Drive.getInstance().getPose(),
-                        FlipAxis.X)
-                        || FieldConstants.blueTrenchBound
-                                .containsFlipped(Drive.getInstance().getPose(), FlipAxis.XY)
-                : FieldConstants.blueTrenchBound.contains(Drive.getInstance().getPose())
-                        || FieldConstants.blueTrenchBound
-                                .containsFlipped(Drive.getInstance().getPose(), FlipAxis.Y);
-
-        return (robotY < lowYLimit || robotY > highYLimit) && !isBlockedByTrench;
-    }
-
-    public static Pose2d getClosestDeliveryPose() {
-        Rotation2d angleToDeliveryLine = getAngleToDeliveryLine();
-        double optimalDistance = SweetSpots.deliverySweetSpots.getOptimalDistance();
-        Translation2d wantedSpot = new Translation2d(FieldConstants.getDeliveryLine(),
-                Drive.getInstance().getPose().getY())
-                        .minus(new Translation2d(optimalDistance, angleToDeliveryLine));
-
-        return new Pose2d(wantedSpot, angleToDeliveryLine);
-    }
-
-
-
 }

@@ -88,10 +88,10 @@ public class Drive extends miscar.swerve.VisionedSwerve {
   private String isRobotInPoseLogPath = getName() + "/is robot in pose";
 
   private static ModuleConfig moduleConfig =
-      new ModuleConfig(0.05207, 5.5, 1.1, DCMotor.getKrakenX60(1), 6.5, 80, 1);
+      new ModuleConfig(0.05207, 3.5, 1, DCMotor.getKrakenX60(1), 10.909, 9, 1);
 
   private static RobotConfig config =
-      new RobotConfig(65, 5.25419, moduleConfig, createModulePosesUsing(robotSize));
+      new RobotConfig(15.000, 1.500, moduleConfig, createModulePosesUsing(robotSize));
 
   {
     configureAutoBuilder();
@@ -272,7 +272,6 @@ public class Drive extends miscar.swerve.VisionedSwerve {
     Logger.recordOutput(getName() + "/isRobotInAngle", DriveUtil.isRobotInAngle());
     Logger.recordOutput(getName() + "/isRobotAlinedToShoot", ShootingUtil.isRobotAlinedToShoot());
     Logger.recordOutput(getName() + "/errorToVirtualHub", ShootingUtil.getErrorToVirtualHub());
-    Logger.recordOutput(getName() + "/canDeliver", ShootingUtil.canDeliver());
     Logger.recordOutput(getName() + "/speedCap", speedCap);
     logToElastic();
 

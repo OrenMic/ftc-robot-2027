@@ -10,7 +10,6 @@ import frc.robot.subsystems.shooter.shootingModel.SweetSpots;
 import frc.robot.util.LoggedTracer;
 import lombok.experimental.ExtensionMethod;
 import miscar.util.GenericHIDUtill;
-import miscar.util.PathFinder;
 import org.littletonrobotics.junction.Logger;
 
 @ExtensionMethod(GenericHIDUtill.class)
@@ -36,9 +35,6 @@ public class ButtonsCommand {
     public static boolean SHOOT;
     public static boolean PULSE;
 
-    public static boolean GO_OVER_BUMP;
-    public static boolean GO_UNDER_TRENCH;
-
     public static boolean intakeCurrentlyPressed;
     public static boolean intakeWasPressed;
     public static boolean intakeWasRelesed;
@@ -61,8 +57,6 @@ public class ButtonsCommand {
       CHANGE_AUTOMATION_LEVEL = driver.getSquareButtonPressed();
 
       SHOOT = driver.getR1ButtonPressed();
-      GO_OVER_BUMP = driver.getTriangleButton();
-      GO_UNDER_TRENCH = driver.getCircleButton();
 
       intakeWasPressed = driver.getR2ButtonPressed();
       intakeWasRelesed = driver.getR2ButtonReleased();
@@ -84,16 +78,11 @@ public class ButtonsCommand {
 
     private static void updateStateByButtons(SuperStructure superStructure) {
       SuperStructureState newState = SuperStructureState.IDLE;
-      if (GO_OVER_BUMP)
-        newState = SuperStructureState.GOING_OVER_BUMP;
-      else if (GO_UNDER_TRENCH) {
-        newState = SuperStructureState.GOING_UNDER_TRENCH;
-      }
 
-      if (superStructure.getState().isShooterActiveState() && PULSE) {
+      if (superStructure.getState().isShootingState() && PULSE) {
         superStructure.overrideIntake = false;
         superStructure.intake.setPulse(true);
-      } else if (!superStructure.getState().isShooterActiveState()) {
+      } else if (!superStructure.getState().isShootingState()) {
         superStructure.intake.setPulse(false);
       }
       if (clearShooter) {
@@ -110,21 +99,21 @@ public class ButtonsCommand {
           }
         }
         if (!intakeTimer.hasElapsed(timeToIntakeDepot)) {
-          if (!superStructure.getState().isShooterActiveState())
+          if (!superStructure.getState().isShootingState())
             newState = SuperStructureState.INTAKING;
           superStructure.setIntakeOverride(IntakeState.INTAKING, ExtensionState.EXTENDED);
         } else {
-          if (!superStructure.getState().isShooterActiveState())
+          if (!superStructure.getState().isShootingState())
             newState = SuperStructureState.INTAKING_DEPOT;
           superStructure.setIntakeOverride(IntakeState.INTAKING, ExtensionState.EXTENDED_DEPOT);
         }
       } else if (intakeWasRelesed) {
         if (wasIntaking && !intakeTimer.hasElapsed(timeToIntakeDepot)) {
           superStructure.setOverrideIntake(false);
-          if (!superStructure.getState().isShooterActiveState())
+          if (!superStructure.getState().isShootingState())
             newState = SuperStructureState.EXTENDED;
         } else {
-          if (!superStructure.getState().isShooterActiveState())
+          if (!superStructure.getState().isShootingState())
             newState = SuperStructureState.INTAKING;
           superStructure.setIntakeOverride(IntakeState.INTAKING, ExtensionState.EXTENDED);
         }
@@ -135,23 +124,19 @@ public class ButtonsCommand {
       if (OUTTAKE) {
         if (superStructure.intake.getIntakeState() != IntakeState.OUTTAKING) {
           superStructure.setIntakeOverride(IntakeState.OUTTAKING, ExtensionState.EXTENDED);
-          if (!superStructure.getState().isShooterActiveState())
+          if (!superStructure.getState().isShootingState())
             newState = SuperStructureState.OUTTAKING;
         } else {
           superStructure.setOverrideIntake(false);
-          if (!superStructure.getState().isShooterActiveState())
+          if (!superStructure.getState().isShootingState())
             newState = SuperStructureState.EXTENDED;
         }
       }
 
       if (SHOOT) {
         superStructure.setOverrideIntake(false);
-        if (!superStructure.getState().isShooterActiveState()) {
-          if (PathFinder.isInAllianceZone(superStructure.drive.getPose())) {
-            newState = SuperStructureState.SHOOTING_MANUAL;
-          } else {
-            newState = SuperStructureState.DELIVERY_MANUAL;
-          }
+        if (!superStructure.getState().isShootingState()) {
+          newState = SuperStructureState.SHOOTING_MANUAL;
         } else {
           newState = superStructure.intake.getExtensionState() == ExtensionState.RETRACTED
               || (superStructure.intake.getExtensionState() == ExtensionState.RETRACTED
@@ -196,18 +181,6 @@ public class ButtonsCommand {
             break;
           case ASSISTED:
             state = SuperStructureState.SHOOTING_ASSISTED;
-            break;
-
-          default:
-            break;
-        }
-      } else if (state.isDeliveryState()) {
-        switch (automationLevel) {
-          case MANUAL:
-            state = SuperStructureState.DELIVERY_MANUAL;
-            break;
-          case ASSISTED:
-            state = SuperStructureState.DELIVERY_ASSISTED;
             break;
 
           default:

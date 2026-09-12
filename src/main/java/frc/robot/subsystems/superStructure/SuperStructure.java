@@ -106,30 +106,18 @@ public class SuperStructure extends SubsystemBase {
       case SHOOTING_ASSISTED:
         SHOOTING_ASSISTED();
         break;
-      case DELIVERY_MANUAL:
-        DELIVERY_MANUAL();
-        break;
-      case DELIVERY_ASSISTED:
-        DELIVERY_ASSISTED();
-        break;
       case EXTENDED:
         EXTENDED();
         break;
       case RETRACTED:
         RETRACTED();
         break;
-      case GOING_OVER_BUMP:
-        GOING_OVER_BUMP();
-        break;
-      case GOING_UNDER_TRENCH:
-        GOING_UNDER_TRENCH();
-        break;
       default:
         state = SuperStructureState.IDLE;
         break;
     }
 
-    if (!state.isShooterActiveState()) {
+    if (!state.isShootingState()) {
       drive.setSpeedCap(5);
     }
 
@@ -141,8 +129,6 @@ public class SuperStructure extends SubsystemBase {
     double hubDistance = SweetSpots.hubSweetSpots.distanceSupplier.getAsDouble();
     Logger.recordOutput(distanceToHubLogPath,
         hubDistance < 100 ? hubDistance : ShootingUtil.getDistanceToHub());
-    Logger.recordOutput(disToDeliveryLineLogPath,
-        SweetSpots.deliverySweetSpots.distanceSupplier.getAsDouble());
     LoggedTracer.record(getName());
   }
 
@@ -251,46 +237,6 @@ public class SuperStructure extends SubsystemBase {
       transfer.setState(TransferState.PROCESSING);
       // setHomeIntakeState();
     }
-  }
-
-  private void DELIVERY_MANUAL() {
-    drive.setState(DriveState.FREE_DRIVE);
-
-    shooterLogic(true, ShooterState.MANUAL_DELIVERY);
-  }
-
-  public void DELIVERY_ASSISTED() {
-    drive.setSpeedCap(deliverySpeedCap.getAsDouble());
-    drive.setLockToAngle(ShootingUtil.getAngleToDeliveryLine());
-    drive.setState(DriveState.ANGLED);
-    if (ShootingUtil.canDeliver()) {
-      deliveryLogic(DriveUtil.isRobotInAngle());
-    } else {
-      setShooterState(ShooterState.DELIVERY, false);
-      transfer.setState(TransferState.PROCESSING);
-      // setHomeIntakeState();
-    }
-  }
-
-  private void deliveryLogic(boolean canShoot) {
-    shooterLogic(canShoot, ShooterState.DELIVERY);
-  }
-
-  private void GOING_OVER_BUMP() {
-    setShooterStateIdle();
-    transfer.setState(TransferState.IDLE);
-
-    drive.setLockToAngle(drive.getRotation().snapAngle(90, 45));
-    drive.setState(DriveState.ANGLED);
-  }
-
-  private void GOING_UNDER_TRENCH() {
-    setShooterStateIdle();
-    transfer.setState(TransferState.IDLE);
-    setHomeIntakeState();
-
-    drive.setLockToAngle(drive.getRotation().snapAngle(180, 90));
-    drive.setState(DriveState.ANGLED);
   }
 
   // from titanium

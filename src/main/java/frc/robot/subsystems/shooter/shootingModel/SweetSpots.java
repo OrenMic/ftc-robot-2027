@@ -7,8 +7,6 @@ import frc.robot.subsystems.shooter.util.ShootingUtil;
 public class SweetSpots {
         public static final ShootingVelocities hubSweetSpots =
                         new ShootingVelocities(ShootingUtil::getDistanceToVirtualHub);
-        public static final ShootingVelocities deliverySweetSpots =
-                        new ShootingVelocities(ShootingUtil::getDistanceToVirtualDeliveryLine);
         // public static final ShootingVelocities deliverySweetSpotsLior =
         // new
         // ShootingVelocities(ShootingUtil::getDistanceToVirtualDeliveryLine);
@@ -54,13 +52,6 @@ public class SweetSpots {
 
 
                 // delivery sweetSpots
-                deliverySweetSpots.put(1.35, new SweetSpot(2000, 2000));
-                deliverySweetSpots.put(2.57, new SweetSpot(2200, 1800));
-                deliverySweetSpots.put(3.5, new SweetSpot(2900, 1000));
-                deliverySweetSpots.put(4.5, new SweetSpot(3080, 1050));
-                // deliverySweetSpots.put(5.75, new SweetSpot(4000, 1100));
-                deliverySweetSpots.put(5.182016, new SweetSpot(3000, 3000));
-                deliverySweetSpots.put(8.601696, new SweetSpot(4000, 3000));
 
                 // deliverySweetSpotsLior.put(2.8, new SweetSpot(1500, 2000));
                 // deliverySweetSpotsLior.put(4.0, new SweetSpot(2000, 2000));
