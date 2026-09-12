@@ -7,6 +7,7 @@ import edu.wpi.first.math.MathShared;
 import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.MathUsageId;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -25,6 +26,7 @@ import frc.robot.subsystems.vision.LimelightVision;
 import frc.robot.subsystems.intake.IntakeStates.IntakeState;
 // import frc.robot.subsystems.leds.Leds;
 import frc.robot.util.Elastic;
+import frc.robot.util.FieldConstants;
 import frc.robot.util.HubShiftUtil;
 import frc.robot.util.LoggedTracer;
 import frc.robot.util.LoggedTunableNumber;
@@ -194,6 +196,10 @@ public class Robot extends LoggedRobot {
 
     LimelightVision.getInstance().setSidePose(leftPose);
     Logger.recordOutput("Robot/isRedAllince", AllianceUtil.isRedAlliance());
+
+    Logger.recordOutput("FieldConstants/hives",
+        new Translation3d[] {FieldConstants.blueLeftHive, FieldConstants.blueRightHive,
+            FieldConstants.redLeftHive, FieldConstants.redRightHive});
   }
 
   /**

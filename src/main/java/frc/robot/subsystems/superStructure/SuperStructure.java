@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveState;
-import frc.robot.subsystems.drive.util.DriveUtil;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeStates.ExtensionState;
 import frc.robot.subsystems.intake.IntakeStates.IntakeState;
