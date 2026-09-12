@@ -15,6 +15,7 @@ import frc.robot.subsystems.shooter.util.ShootingUtil;
 import frc.robot.subsystems.shooter.shootingModel.SweetSpots;
 import frc.robot.subsystems.transfer.Transfer;
 import frc.robot.subsystems.transfer.TransferState;
+import frc.robot.util.FieldConstants;
 import frc.robot.util.GeomUtil;
 import frc.robot.util.LoggedTracer;
 import frc.robot.util.LoggedTunableNumber;
@@ -128,6 +129,8 @@ public class SuperStructure extends SubsystemBase {
     double hubDistance = SweetSpots.hubSweetSpots.distanceSupplier.getAsDouble();
     Logger.recordOutput(distanceToHubLogPath,
         hubDistance < 100 ? hubDistance : ShootingUtil.getDistanceToHub());
+    Logger.recordOutput(getName() + "/closestHive",
+        FieldConstants.getHivePose3d(Drive.getInstance().getPose().getTranslation()));
     LoggedTracer.record(getName());
   }
 

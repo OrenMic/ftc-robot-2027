@@ -18,7 +18,7 @@
   {
     "name": "/Preferences/Alliance/isRed",
     "type": "string",
-    "value": "Red",
+    "value": "Blue",
     "properties": {
       "persistent": true
     }

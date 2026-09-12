@@ -40,15 +40,15 @@ public class ShootingUtil {
     public static Pose2d getClosestShootingPoseFrom(Translation2d pose) {
         Rotation2d angleToHub = getAngleToHubFrom(pose);
         double optimalDistance = SweetSpots.hubSweetSpots
-                .getOptimalDistance(FieldConstants.getHivePose().getDistance(pose));
-        Translation2d wantedSpot =
-                FieldConstants.getHivePose().minus(new Translation2d(optimalDistance, angleToHub));
+                .getOptimalDistance(FieldConstants.getHivePose(pose).getDistance(pose));
+        Translation2d wantedSpot = FieldConstants.getHivePose(pose)
+                .minus(new Translation2d(optimalDistance, angleToHub));
         angleToHub = getAngleToHubFrom(wantedSpot);
         return new Pose2d(wantedSpot, angleToHub);
     }
 
     public static Rotation2d getAngleToHubFrom(Translation2d pose) {
-        Translation2d v = FieldConstants.getHivePose();
+        Translation2d v = FieldConstants.getHivePose(pose);
         Translation2d u = pose;
         Rotation2d angleToHub = new Rotation2d(Math.atan2(v.minus(u).getY(), v.minus(u).getX()));
 
@@ -57,7 +57,7 @@ public class ShootingUtil {
 
 
     public static double getDistanceToHub() {
-        return FieldConstants.getHivePose()
+        return FieldConstants.getHivePose(Drive.getInstance().getPose().getTranslation())
                 .getDistance(Drive.getInstance().getPose().getTranslation());
     }
 
@@ -71,7 +71,9 @@ public class ShootingUtil {
     }
 
     public static Translation2d getVirtualHubTargetPose() {
-        return getVirtualTargetPose(FieldConstants.getHivePose(), ShootingInMotion.hubTof);
+        return getVirtualTargetPose(
+                FieldConstants.getHivePose(Drive.getInstance().getPose().getTranslation()),
+                ShootingInMotion.hubTof);
     }
 
     public static Translation2d getVirtualTargetPose(Translation2d originalTarget,
