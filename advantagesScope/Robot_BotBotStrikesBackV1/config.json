@@ -1,0 +1,125 @@
+{
+  "name": "Best",
+  "disableSimplification": true,
+  "rotations": [
+    {
+      "axis": "x",
+      "degrees": 180
+    },
+    {
+      "axis": "y",
+      "degrees": 0
+    },
+    {
+      "axis": "z",
+      "degrees": 0
+    }
+  ],
+  "position": [
+    -0.4191,
+    0.42545,
+    0
+  ],
+  "cameras": [
+    {
+      "name": "Limelight right",
+      "rotations": [
+        {
+          "axis": "x",
+          "degrees": 0
+        },
+        {
+          "axis": "y",
+          "degrees": 0
+        },
+        {
+          "axis": "z",
+          "degrees": 0
+        }
+      ],
+      "position": [
+        0.1,
+        -0.3,
+        0.3
+      ],
+      "resolution": [
+        960,
+        720
+      ],
+      "fov": 59.6
+    },
+    {
+      "name": "Limelight left",
+      "rotations": [
+        {
+          "axis": "x",
+          "degrees": 0
+        },
+        {
+          "axis": "y",
+          "degrees": 0
+        },
+        {
+          "axis": "z",
+          "degrees": 0
+        }
+      ],
+      "position": [
+        0.1,
+        0.3,
+        0.3
+      ],
+      "resolution": [
+        960,
+        720
+      ],
+      "fov": 59.6
+    }
+  ],
+  "components": [
+    {
+      "name": "Shooter",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 0
+        },
+        {
+          "axis": "y",
+          "degrees": 0
+        },
+        {
+          "axis": "z",
+          "degrees": 180
+        }
+      ],
+      "zeroedPosition": [
+        0.042899998445,
+        0.17644697361,
+        0.0585
+      ]
+    },
+    {
+      "name": "Intake",
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 0
+        },
+        {
+          "axis": "y",
+          "degrees": -30
+        },
+        {
+          "axis": "z",
+          "degrees": 0
+        }
+      ],
+      "zeroedPosition": [
+        0.079709030006,
+        -0.3329498,
+        0.508074081945
+      ]
+    }
+  ]
+}

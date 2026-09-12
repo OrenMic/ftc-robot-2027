@@ -1,0 +1,29 @@
+{
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.format.settings.url": "eclipse-formatter.xml",
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx16G -Xms100m -Xlog:disable",
+  "java.debug.settings.onBuildFailureProceed": true,
+  "cSpell.words": [
+    "beambrake",
+    "endeffector",
+    "INTAKING",
+    "Kalman",
+    "lerp",
+    "Lior",
+    "Liran",
+    "mecs",
+    "miscar",
+    "OUTTAKING",
+    "Robo",
+    "roborio",
+    "Setpoints",
+    "SWEETSPOT"
+  ],
+  "wpilib.autoStartRioLog": false,
+  "powermode.combo.location": "editor",
+  "powermode.combo.counterEnabled": "show",
+  "powermode.shake.enabled": false,
+  "java.completion.favoriteStaticMembers": [
+    "miscar.util"
+  ]
+}

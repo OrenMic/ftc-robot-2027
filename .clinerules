@@ -1,0 +1,59 @@
+# robot-2026-hamseason project rules
+
+> Local, machine-specific working rules for this checkout (listed in `.gitignore` —
+> meant to stay local, not shared).
+> The committed, repo-wide AI-development contract lives in `AGENTS.md` — read it too.
+
+## Build environment (IMPORTANT)
+- This is an FRC **2026** Java robot (GradleRIO `2026.2.1`, Gradle 8.11, Java source/target 17).
+- `java`, `javac` are **NOT** on PATH and `JAVA_HOME` is **not** set globally. Do not try to find a JDK elsewhere.
+
+### The JDK
+- The correct JDK is the WPILib-2026 bundled Temurin **OpenJDK 17.0.16**:
+  - `C:\Users\Public\wpilib\2026\jdk`
+- Other WPILib JDKs also exist but do **NOT** match this branch: `C:\Users\Public\wpilib\2025\jdk`, `C:\Users\Public\wpilib\2027_alpha5\jdk`.
+
+### Required before every Gradle command
+Set `JAVA_HOME` to the WPILib 2026 JDK, otherwise the Gradle wrapper (`gradlew.bat`) cannot start:
+
+```powershell
+$env:JAVA_HOME = 'C:\Users\Public\wpilib\2026\jdk'
+```
+
+### Canonical commands (run from repo root with the above JAVA_HOME set)
+- Compile check: `.\gradlew.bat compileJava`      (also runs `spotlessApply`)
+- Full build: `.\gradlew.bat build`
+- Run tests: `.\gradlew.bat test`
+- Formatting check: `.\gradlew.bat spotlessCheck`
+- Run AdvantageKit simulator: `.\gradlew.bat simulateJava`
+- Replay a log (AdvantageScope): `.\gradlew.bat replayWatch`
+
+## AI-development workflow (Cline-specific)
+This repo follows the "AI agents run the sim and read the logs" workflow popularized by
+Team 254's *The Next Revolution: AI in FRC*. Hard rules:
+
+1. **Verification first.** A change is not done until it compiles, passes Spotless and
+   `test`. Always run the command and show real output — never say "it should work".
+2. **Closed loop for behavior.** Any behavior change must be proven in the simulator:
+   edit → `simulateJava` → read the newest `logs/sim/akit_*.wpilog` → confirm the outcome.
+   The sim is the ground truth. If you can't run it, say so.
+3. **Vibe-code responsibly.** Delegate boilerplate/tests/refactors/debug; **human-review**
+   control-critical logic (kalman, swerve, limeLightVision, mecsIOs/motorIOs/servos).
+   Tag AI-assisted commits with `#ai`; prefer adding `Logger.recordOutput(...)` so logs
+   are analyzable.
+4. **Use version-accurate docs** (WPILib 2026 / AdvantageKit 26.0.2). AI that trained on
+   older seasons produces breaking-changes code — always compile to prove it.
+5. Keep `AGENTS.md` in sync with any rule changes here.
+
+## Repo orientation
+- `src/main/java/frc/robot/` — robot program (`Main`, `commands`, `subsystems`, `util`).
+- `src/main/java/miscar/` — team library (`kalman`, `swerve`, `limeLightVision`,
+  `mecsIOs`, `motorIOs`, `servos`, `configs`, `util`).
+- `src/test/java/tests/` — JUnit tests.
+- Sim logs: `logs/sim/*.wpilog`; robot logs: `logs/*.wpilog`.
+- AdvantageScope: `AdvantageScope Simulation.json`, `advantagesScope/`.
+
+## Gotchas
+- `settings.gradle` still has `String frcYear = '2025'` (line 7) even though `build.gradle` targets 2026. It only affects the plugin-resolution repo path and is not what blocks the build — do not assume it means the JDK is 2025, and do not "fix" it.
+- `o-bots7160/AdvantageScope-mcp`, `GabrielNakamoto/artemis`, and
+  `ramalamadingdong/frc-rag-mcpserver` are optional MCP integrations — see `docs/ai-workflow.md`.

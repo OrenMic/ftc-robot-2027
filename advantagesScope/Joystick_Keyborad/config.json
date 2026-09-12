@@ -1,0 +1,320 @@
+{
+  "name": "keyborad (White)",
+  "components": [
+    {
+      "name": "1",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        50,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 13
+    },
+    {
+      "name": "2",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        80,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 14
+    },
+    {
+      "name": "3",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        115,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 15
+    },
+    {
+      "name": "4",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        149,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 16
+    },
+    {
+      "name": "2l",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        183,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 9
+    },
+    {
+      "name": "3l",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        250,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 8
+    },
+    {
+      "name": "3r",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        283,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 7
+    },
+    {
+      "name": "4r",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        350,
+        110
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 6
+    },
+    {
+      "name": "4l",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        365,
+        142
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 5
+    },
+    {
+      "name": "2r",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        165,
+        143
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 10
+    },
+    {
+      "name": "5r",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        374,
+        175
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 4
+    },
+    {
+      "name": "1l",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        171,
+        175
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 11
+    },
+    {
+      "name": "1r",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        187,
+        210
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 12
+    },
+    {
+      "name": "0l",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        255,
+        210
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 1
+    },
+    {
+      "name": "0r",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        290,
+        210
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 2
+    },
+    {
+      "name": "5l",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        357,
+        208
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 3
+    },
+    {
+      "name": "fix",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        487,
+        208
+      ],
+      "sizePx": [
+        90,
+        30
+      ],
+      "sourceIndex": 21
+    },
+    {
+      "name": "arrow_up",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        598,
+        208
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 17
+    },
+    {
+      "name": "arrow_down",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        598,
+        242
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 18
+    },
+    {
+      "name": "arrow_right",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        634,
+        242
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 20
+    },
+    {
+      "name": "arrow_left",
+      "type": "button",
+      "isYellow": true,
+      "isEllipse": false,
+      "centerPx": [
+        564,
+        242
+      ],
+      "sizePx": [
+        30,
+        30
+      ],
+      "sourceIndex": 19
+    }
+  ]
+}

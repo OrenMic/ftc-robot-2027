@@ -1,0 +1,33 @@
+{
+  "_note": "EXAMPLE only - NOT read by any tool. Copy values into your agent's real MCP config (Cline: cline_mcp_settings.json / MCP tab; Cursor/Codex/Claude: their own MCP settings). Replace <PATH_TO_...> with real repo paths and check each server README for the exact command/args.",
+  "mcpServers": {
+    "frc-wpilog": {
+      "command": "python",
+      "args": [
+        "<PATH_TO_artemis>/apollo"
+      ]
+    },
+    "frc-nt4-live": {
+      "command": "python",
+      "args": [
+        "<PATH_TO_artemis>/artemis"
+      ]
+    },
+    "frc-wpilib-docs": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "<PATH_TO_frc-rag-mcpserver>",
+        "run",
+        "server.py"
+      ]
+    },
+    "frc-advantagescope": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "<PATH_TO_o-bots7160/AdvantageScope-mcp>"
+      ]
+    }
+  }
+}

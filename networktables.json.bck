@@ -1,0 +1,58 @@
+[
+  {
+    "name": "/Preferences/Encoders/Offsets/0",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Encoders/Offsets/1",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Encoders/Offsets/2",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Encoders/Offsets/3",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Alliance/isRed",
+    "type": "string",
+    "value": "Red",
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Auto",
+    "type": "string",
+    "value": "left Cycle (depot)",
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/side pose",
+    "type": "string",
+    "value": "left (roboRIO)",
+    "properties": {
+      "persistent": true
+    }
+  }
+]
