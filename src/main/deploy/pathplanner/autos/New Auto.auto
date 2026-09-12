@@ -7,7 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Cycle_2"
+            "pathName": "Shoot1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Intake1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Travle1"
           }
         }
       ]
