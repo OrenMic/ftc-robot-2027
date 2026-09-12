@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.commands.DriveCommandUtil;
-import miscar.util.PathFinder;
 import org.littletonrobotics.junction.Logger;
 
 public class AutoDriveCommand extends DriveCommandUtil {
@@ -28,28 +27,16 @@ public class AutoDriveCommand extends DriveCommandUtil {
 
   @Override
   public void execute() {
-    boolean willCollide = PathFinder.willCollide(drive.getPose().getTranslation(),
-        drive.getLockPose().getTranslation());
     boolean targetPoseDidntChanged = drive.getLastLockPose().equals(drive.getLockPose());
-    Logger.recordOutput(willColideLogPath, willCollide);
     Logger.recordOutput(isPidActiveLogPath, pidFollow.isScheduled());
     Logger.recordOutput(isTrajectoryFollowActiveLogPath, trajectoryFollow.isScheduled());
     Logger.recordOutput(autoDriveMethodLogPath,
         pidFollow.isScheduled() ? "pidFollow" : "trajectoryFollow");
     Logger.recordOutput(targetPoseDidntChangeLogPath, targetPoseDidntChanged);
-    if ((trajectoryFollow.isScheduled() || (pidFollow.isScheduled() && !willCollide))
-        && targetPoseDidntChanged) {
+    if ((trajectoryFollow.isScheduled() || (pidFollow.isScheduled())) && targetPoseDidntChanged) {
       return;
     }
-    if (willCollide) {
-      PathConstraints constraints = new PathConstraints(4.0, 4.0, 2 * Math.PI, 4 * Math.PI); // The
-      Pathfinding.setStartPosition(drive.getPose().getTranslation());
-      trajectoryFollow = AutoBuilder.pathfindToPose(drive.getLockPose(), constraints);
-      trajectoryFollow.schedule();
-      pidFollow.cancel();
-    } else {
-      pidFollow.schedule();
-    }
+    pidFollow.schedule();
   }
 
   @Override

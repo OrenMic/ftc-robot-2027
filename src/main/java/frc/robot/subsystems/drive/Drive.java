@@ -272,7 +272,6 @@ public class Drive extends miscar.swerve.VisionedSwerve {
     Logger.recordOutput(getName() + "/isRobotInAngle", DriveUtil.isRobotInAngle());
     Logger.recordOutput(getName() + "/isRobotAlinedToShoot", ShootingUtil.isRobotAlinedToShoot());
     Logger.recordOutput(getName() + "/errorToVirtualHub", ShootingUtil.getErrorToVirtualHub());
-    Logger.recordOutput(getName() + "/canDeliver", ShootingUtil.canDeliver());
     Logger.recordOutput(getName() + "/speedCap", speedCap);
     logToElastic();
 

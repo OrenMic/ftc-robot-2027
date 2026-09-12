@@ -6,7 +6,6 @@ import frc.robot.subsystems.shooter.shootingModel.SweetSpots;
 
 public enum ShooterState {
   SHOOTING(SweetSpots.hubSweetSpots::InterpolateOptimalVelocities), //
-  DELIVERY(SweetSpots.deliverySweetSpots::InterpolateOptimalVelocities), //
   MANUAL_SHOOTING(() -> SweetSpots.tower), //
   MANUAL_DELIVERY(() -> SweetSpots.defaultDelivery), //
   HOLDING_VELOCITY(() -> SweetSpot.kZero), //
