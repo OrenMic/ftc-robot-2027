@@ -8,8 +8,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.drive.DrivePidCalculator;
 import frc.robot.commands.drive.DriveProfiledPidFollow;
 import frc.robot.subsystems.drive.Drive;
@@ -55,12 +53,10 @@ public class AutoActions {
 
   public static Command shoot(SuperStructure superStructure, double pulseDelay, double timeOut) {
     return Commands
-        .sequence(
-            Commands.parallel(log("Shot"),
-                superStructure
-                    .runOnce(() -> superStructure.setState(SuperStructureState.SHOOTING_ASSISTED))),
-            pulseAfter(superStructure, pulseDelay))
-        .withTimeout(timeOut).andThen(resetAutoCommand(superStructure), stopPulse(superStructure));
+        .sequence(Commands.parallel(log("Shot"),
+            superStructure
+                .runOnce(() -> superStructure.setState(SuperStructureState.SHOOTING_ASSISTED))))
+        .withTimeout(timeOut).andThen(resetAutoCommand(superStructure));
   }
 
   private static Command resetAutoCommand(SuperStructure superStructure) {
@@ -109,53 +105,13 @@ public class AutoActions {
           superStructure.shootingLogic(true);
         }),
         new DriveProfiledPidFollow(superStructure.drive),
-        pulseAfter(superStructure, pulseDelay),
         Commands.run(() -> {
           superStructure.drive.setState(DriveState.IDLE);
           superStructure.drive.setLockToPosition(
               new Pose2d(AllianceFlipUtil.apply(point), ShootingUtil.getAngleToHub()));
         })).until(DriveUtil::isRobotInTransition),
         Commands.waitSeconds(1),
-        resetAutoCommand(superStructure),
-        stopPulse(superStructure));
-  }
-
-  // public static Command fastDriveTo(SuperStructure superStructure,
-  // Translation2d point) {
-  // return
-  // Commands.sequence(Commands.parallel(logCommand("fastDriveTo"),
-  // new DrivePidFollow(superStructure.drive),
-  // Commands.run(() -> {
-  // superStructure.drive.setState(DriveState.IDLE);
-  // superStructure.drive.setLockToPosition(
-  // new Pose2d(AllianceFlipUtil.apply(point),
-  // ShootingUtil.getAngleToHub()));
-  // }))).until(DriveUtil::isRobotCloseInTransition);
-  // }
-
-  // public static Command shootWhileDrivingToByCurrnt(SuperStructure
-  // superStructure,
-  // Translation2d point, double pulseDelay) {
-  // return shootWhileDrivingTo(superStructure, point, pulseDelay)
-  // .andThen(Commands.waitUntil(superStructure.transfer::isEmpty))
-  // .raceWith(
-  // Commands.waitSeconds(1).andThen(Commands.waitUntil(superStructure.transfer::isEmpty)))
-  // .andThen(resetAutoCommand(superStructure),
-  // stopPulse(superStructure),
-  // fastDriveTo(superStructure, point));
-  // }
-
-  private static Command pulseAfter(SuperStructure superStructure, double pulseDelay) {
-    return new WaitCommand(pulseDelay)
-        .andThen(new WaitUntilCommand(() -> superStructure.shooter.isIndexerActive()))
-        .andThen(() -> {
-          superStructure.intake.setPulse(true);
-        }).andThen(Commands.run(() -> {
-        }));
-  }
-
-  private static Command stopPulse(SuperStructure superStructure) {
-    return Commands.runOnce(() -> superStructure.intake.setPulse(false));
+        resetAutoCommand(superStructure));
   }
 
   public static Command driveToRedPose(SuperStructure superStructure, Pose2d point) {

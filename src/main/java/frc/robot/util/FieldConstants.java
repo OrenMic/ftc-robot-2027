@@ -5,8 +5,8 @@ import edu.wpi.first.math.util.Units;
 import miscar.util.AllianceUtil;
 
 public class FieldConstants {
-  public static final double width = 8.07;
-  public static final double length = 16.54;
+  public static final double width = Units.inchesToMeters(144);
+  public static final double length = width;
   private static final double rightBlueTrenchY = 0.665988;
 
   public static final Translation2d redHub =

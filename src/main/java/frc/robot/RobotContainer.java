@@ -136,12 +136,7 @@ public class RobotContainer {
 
     // Set up auto routines
     autoChooser = new ManageableLoggedDashboardChooser<>("auto");
-    autoChooser.setDefaultOption("left Cycle (depot)", Auto.leftCycleAuto(superStructure));
-    autoChooser.addOption("right Cycle (human)", Auto.rightCycleAuto(superStructure));
-
-    autoChooser.addOption("right shoot 8 (human)", Auto.shootFirst8Right(superStructure));
-    autoChooser.addOption("middle shoot 8", Auto.shootFirst8Middle(superStructure));
-    autoChooser.addOption("left shoot 8 (depot)", Auto.shootFirst8Left(superStructure));
+    autoChooser.setDefaultOption("left Cycle (depot)", Auto.poc(superStructure));
 
     autoChooser.reloadDefaultOption("Auto");
     autoChooser.onChangeSave("Auto");
