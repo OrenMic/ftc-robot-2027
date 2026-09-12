@@ -10,7 +10,6 @@ public class DCMotorUtil extends DCMotor implements Cloneable {
         freeSpeedRadPerSec, numMotors);
   }
 
-
   public static DCMotorUtil from(DCMotor otherDCMotor) {
     // We pass "1" has the number of motors because
     // otherwise it will alter the DCmotor's configs.

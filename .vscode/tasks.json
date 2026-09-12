@@ -16,32 +16,6 @@
         "focus": false,
         "panel": "shared"
       }
-    },
-    {
-      "label": "Verify (Spotless + compile + tests)",
-      "type": "shell",
-      "command": "${workspaceFolder}\\tools\\verify.ps1",
-      "problemMatcher": [
-        "$gradle"
-      ],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "Run simulation",
-      "type": "shell",
-      "command": "${workspaceFolder}\\tools\\sim.ps1",
-      "problemMatcher": [],
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": true,
-        "panel": "shared"
-      }
     }
   ]
 }

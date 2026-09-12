@@ -20,12 +20,13 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.apriltag.AprilTag;
-import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -170,7 +171,7 @@ public class Drive extends miscar.swerve.VisionedSwerve {
 
   @Override
   public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds,
-      Vector<N3> visionMeasurementStdDevs) {
+      Matrix<N3, N1> visionMeasurementStdDevs) {
     super.addVisionMeasurement(visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
   }
 
@@ -204,8 +205,6 @@ public class Drive extends miscar.swerve.VisionedSwerve {
   }
 
   public void setPose(Pose2d pose) {
-    // poseKalman.setPose(rawGyroRotation, pose);
-    poseKalman2.setPose(rawGyroRotation, pose);
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
   }
 

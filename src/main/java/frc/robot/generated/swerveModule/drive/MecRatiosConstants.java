@@ -8,7 +8,7 @@ public class MecRatiosConstants {
 
   /** The SwerveModule's drive motor to mec ratio */
   private final double driveMotorToMecRatio =
-      (1 / (((26.0 / 12.0) * (45.0 / 15.0))) * (0.1016 * Math.PI));
+      (1 / (((26.0 / 12.0) * (45.0 / 15.0))) * (0.112 * Math.PI));
   // * 0.9417348967;
 
   // / 0.3847499125568381

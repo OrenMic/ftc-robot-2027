@@ -222,7 +222,3 @@ logs/**/*_sim*.wpilog
 !gradle/wrapper/gradle-wrapper.jar
 
 py/logs/*
-
-### Cline ###
-# Local Cline rules (machine-specific JDK/build notes; keep local)
-# .clinerules

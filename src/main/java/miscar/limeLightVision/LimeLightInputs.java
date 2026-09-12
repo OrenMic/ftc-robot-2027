@@ -1,7 +1,8 @@
 package miscar.limeLightVision;
 
-import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -46,8 +47,6 @@ public class LimeLightInputs {
 
   public record PoseObservation(Pose2d pose, double timestamp, double linearStdDev,
       double anglerStdDev) {
-    // public static PoseObservation kzero = new
-    // PoseObservation(Pose2d.kZero, 0, 0, 0);
   }
 
   public record PoseData(Pose2d pose, double timestamp) {
@@ -57,6 +56,6 @@ public class LimeLightInputs {
   @FunctionalInterface
   public static interface VisionConsumer {
     public void accept(Pose2d visionRobotPoseMeters, double timestampSeconds,
-        Vector<N3> visionMeasurementStdDevs);
+        Matrix<N3, N1> visionMeasurementStdDevs);
   }
 }

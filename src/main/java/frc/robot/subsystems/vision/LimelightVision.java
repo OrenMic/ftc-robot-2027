@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import org.littletonrobotics.junction.Logger;
-import edu.wpi.first.math.geometry.Ellipse2d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.util.Units;
@@ -20,7 +19,6 @@ import miscar.annotation.ConstantsUser;
 import miscar.annotation.CreateConstants;
 import miscar.annotation.Singleton;
 import miscar.configs.vision.LimelightConfig;
-import miscar.kalman.Ellipse2dUtil;
 import miscar.limeLightVision.LimeLightInputs.PoseData;
 import miscar.limeLightVision.LimeLightInputs.PoseObservation;
 import miscar.util.AllianceUtil;
@@ -74,7 +72,7 @@ public class LimelightVision extends Vision {
     frontLeft.setEnabled(true);
     side.setEnabled(true);
 
-    // red tranch
+    // red tranchs
     // left tranch
     blackListedAprilTags.add(6);
     blackListedAprilTags.add(7);
@@ -82,7 +80,7 @@ public class LimelightVision extends Vision {
     blackListedAprilTags.add(1);
     blackListedAprilTags.add(12);
 
-    // blue tranch
+    // blue tranchs
     // left tranch
     blackListedAprilTags.add(22);
     blackListedAprilTags.add(23);
@@ -149,7 +147,7 @@ public class LimelightVision extends Vision {
 
     OptionalDouble stddevBotPose1 = calcBotPose1StdDev(limelight);
     OptionalDouble stddevBotPose2 = calcBotPose2StdDev(limelight);
-    OptionalDouble stddevLimitless = calcBotPose1StdDevLimitless(limelight);
+    OptionalDouble stddevLimitles = calcBotPose1StdDevLimitless(limelight);
 
     ArrayList<PoseObservation> poseObservations = new ArrayList<>();
     ArrayList<Pose2d> rejectedPoses = new ArrayList<>();
@@ -161,23 +159,23 @@ public class LimelightVision extends Vision {
         visionResets++;
         if (stddevBotPose1.isPresent()) {
           poseObservations.add(new PoseObservation(pose.get().pose(), pose.get().timestamp(),
-              stddevBotPose1.getAsDouble(), Units.degreesToRadians(5)));
-        } else if (stddevLimitless.isPresent() && visionResets < 100) {
+              stddevBotPose1.getAsDouble(), Units.degreesToRadians(25)));
+        } else if (stddevLimitles.isPresent() && visionResets < 100) {
           poseObservations.add(new PoseObservation(pose.get().pose(), pose.get().timestamp(),
-              stddevLimitless.getAsDouble(), Units.degreesToRadians(5)));
+              stddevLimitles.getAsDouble(), Units.degreesToRadians(25)));
         } else {
           rejectedPoses.add(pose.get().pose());
         }
       }
     }
 
-    if (limelight.useMegaBotPose2 && stddevBotPose1.isEmpty() && stddevLimitless.isEmpty()) {
+    if (limelight.useMegaBotPose2 && stddevBotPose1.isEmpty()) {
       Optional<PoseData> pose = limelight.getBotPose2();
 
       if (pose.isPresent()) {
         if (stddevBotPose2.isPresent()) {
           poseObservations.add(new PoseObservation(pose.get().pose(), pose.get().timestamp(),
-              stddevBotPose2.getAsDouble(), Units.degreesToRadians(90)));
+              stddevBotPose2.getAsDouble(), Double.POSITIVE_INFINITY));
         } else {
           rejectedPoses.add(pose.get().pose());
         }
@@ -193,11 +191,6 @@ public class LimelightVision extends Vision {
         rejectedPoses.toArray(Pose2d[]::new));
     Logger.recordOutput("LimelightVision/filterPoses/" + limelight.name + "/accepted",
         poseObservations.stream().map((pose) -> pose.pose()).toArray(Pose2d[]::new));
-
-    Logger.recordOutput("LimelightVision/filterPoses/" + limelight.name + "/accepted/covariance",
-        poseObservations.stream()
-            .map((pose) -> Ellipse2dUtil.toCovarianceEllipse(pose.linearStdDev(), pose.pose()))
-            .toArray(Ellipse2d[]::new));
     PoseObservation[] observations = poseObservations.toArray(PoseObservation[]::new);
 
     return observations;
@@ -237,7 +230,7 @@ public class LimelightVision extends Vision {
 
     return OptionalDouble.of(
         Math.max(
-            (0.2 * Math.pow(disToTagMeter.getAsDouble(), 2) / limelight.getTargetCount())
+            (0.2 * Math.pow(disToTagMeter.getAsDouble(), 3) / limelight.getTargetCount())
                 * limelight.getCameraStdDevFactors(),
             0.15));
   }
@@ -285,7 +278,7 @@ public class LimelightVision extends Vision {
     }
 
     return OptionalDouble.of(Math.max(
-        (0.25 * Math.pow(disToTagMeter.getAsDouble(), 2) / limelight.getTargetCount())
+        (0.25 * Math.pow(disToTagMeter.getAsDouble(), 3) / limelight.getTargetCount())
             * limelight.getCameraStdDevFactors() * VisionConstants.linearStdDevMegatag2Factor,
         0.15));
   }

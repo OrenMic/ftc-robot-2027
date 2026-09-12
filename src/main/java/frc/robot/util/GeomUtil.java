@@ -180,18 +180,6 @@ public class GeomUtil {
   }
 
   /**
-   * Creates a new pose from an existing one using a different rotation
-   * value.
-   *
-   * @param pose The original pose
-   * @param rotation The new rotation to use
-   * @return The new pose with the original translation and new rotation
-   */
-  public static Pose3d withRotation(Pose3d pose, Rotation3d rotation) {
-    return new Pose3d(pose.getTranslation(), rotation);
-  }
-
-  /**
    * Snaps a rotation to the nearest angle in a repeating set.
    *
    * @param rot The rotation to snap.

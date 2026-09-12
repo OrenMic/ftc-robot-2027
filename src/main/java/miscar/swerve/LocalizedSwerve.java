@@ -1,21 +1,17 @@
 package miscar.swerve;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
 import miscar.configs.encoder.EncoderConfig;
 import miscar.configs.mecs.Ratios;
 import miscar.configs.motors.MotorIOConfig;
 import miscar.gyro.GyroIO;
 import miscar.gyro.GyroIOInputsAutoLogged;
-import miscar.kalman.PoseKalman2;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
@@ -23,7 +19,6 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 public class LocalizedSwerve extends SwerveBase {
 
   protected Rotation2d rawGyroRotation = new Rotation2d();
-  protected Rotation2d lastRawGyroRotation = new Rotation2d();
 
   protected final GyroIO gyro;
 
@@ -40,16 +35,6 @@ public class LocalizedSwerve extends SwerveBase {
 
   protected final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(kinematics,
       rawGyroRotation, lastModulePositions, new Pose2d(0, 0, Rotation2d.kZero));
-
-  // private final KalmanHelper kalmanHelper = new
-  // KalmanHelper(poseEstimator);
-
-  Vector<N3> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.7);
-  Vector<N3> visionStdDevs = VecBuilder.fill(0.9, 0.9, 0.9);
-  // protected final PoseKalman poseKalman = new PoseKalman(new
-  // Pose2d(), stateStdDevs, visionStdDevs);
-  protected final PoseKalman2 poseKalman2 = new PoseKalman2(stateStdDevs, visionStdDevs);
-
 
   public LocalizedSwerve(MotorIOConfig driveConfig, Ratios driveRatios,
       MotorIOConfig rotationConfig, EncoderConfig<?> encoderConfig, Ratios rotationRatios,
@@ -71,11 +56,6 @@ public class LocalizedSwerve extends SwerveBase {
   @AutoLogOutput(key = "SwerveDrive/Robot Pose")
   public Pose2d getPose() {
     return poseEstimator.getEstimatedPosition();
-  }
-
-  @AutoLogOutput(key = "SwerveDrive/Robot Pose Kalman")
-  public Pose2d getPoseKalman() {
-    return poseKalman2.getPose();
   }
 
   public void fieldRelativeDrive(ChassisSpeeds speeds) {
@@ -140,10 +120,6 @@ public class LocalizedSwerve extends SwerveBase {
     Logger.recordOutput("Swerve/Gyro/roll", getRoll());
     Logger.recordOutput("Swerve/Gyro/pitch", getPitch());
 
-    // Logger.recordOutput("PoseKalman/Robot Speed", poseKalman.getVel());
-    // Logger.recordOutput("SwerveDrive/Field Robot Speed",
-    // ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeed(),
-    // poseKalman.getRotation()));
 
     SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];
     for (SwerveModule module : modules) {
@@ -162,33 +138,5 @@ public class LocalizedSwerve extends SwerveBase {
     }
 
     poseEstimator.updateWithTime(Timer.getTimestamp(), rawGyroRotation, lastModulePositions);
-
-    // kalmanHelper.log();
-
-
-    // ChassisSpeeds fieldRelative =
-    // // ChassisSpeeds.fromRobotRelativeSpeeds(
-    // getChassisSpeed();
-    // , poseKalman.getRotation());
-
-    // double omega = poseKalman.updateRotation(rawGyroRotation);
-    // double omega = gyroInputs.yawVelocityRadPerSec;
-
-    // fieldRelative.omegaRadiansPerSecond = omega;
-
-    // fieldRelative = fieldRelative.minus(poseKalman.getVel()).div(0.02);
-    // poseKalman.setChassisSpeeds(getChassisSpeed());
-
-    double g = 9.80665;
-    // double ax = gyroInputs.accelerationY * g;
-    // double ay = (gyroInputs.accelerationX - 0.011) * g;
-    // double vx = getChassisSpeed().vxMetersPerSecond;
-    // double vy = getChassisSpeed().vyomegaMetersPerSecond;
-    // double omega = gyroInputs.yawVelocityRadPerSec;
-    // var u = VecBuilder.fill(vx, vy, omega);
-    double omega = poseKalman2.updateRotation(rawGyroRotation);
-    ChassisSpeeds chassisSpeed = getChassisSpeed();
-    poseKalman2.predict(VecBuilder.fill(chassisSpeed.vxMetersPerSecond,
-        chassisSpeed.vyMetersPerSecond, omega));
   }
 }
