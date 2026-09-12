@@ -212,9 +212,9 @@ public class Drive extends miscar.swerve.VisionedSwerve {
   public void robotRelativeDrive(ChassisSpeeds speeds) {
 
     super.robotRelativeDrive(new ChassisSpeeds(
-        Math.abs(speeds.vxMetersPerSecond) > 4.5 ? Math.copySign(4.5, speeds.vxMetersPerSecond)
+        Math.abs(speeds.vxMetersPerSecond) > 3 ? Math.copySign(3, speeds.vxMetersPerSecond)
             : speeds.vxMetersPerSecond,
-        Math.abs(speeds.vyMetersPerSecond) > 4.5 ? Math.copySign(4.5, speeds.vyMetersPerSecond)
+        Math.abs(speeds.vyMetersPerSecond) > 3 ? Math.copySign(3, speeds.vyMetersPerSecond)
             : speeds.vyMetersPerSecond,
         speeds.omegaRadiansPerSecond));
   }
