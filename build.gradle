@@ -14,11 +14,13 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-// Build PathPlanner from the vendored submodule source instead of the prebuilt
-// Maven jar. The library lives at libraries/pathplanner (git submodule), with the
-// Java sources under libraries/pathplanner/pathplannerlib/src/main/java.
+// Build PathPlanner from the submodule source instead of the prebuilt Maven jar.
+// The submodule lives inside the default source root (src/main/java), so the default
+// src/main/java glob would otherwise compile the whole repo (its examples + tests).
+// Exclude it from the default set and add back only the library's real Java sources.
+sourceSets.main.java.exclude 'libraries/**'
 sourceSets.main.java.srcDirs += [
-    'libraries/pathplanner/pathplannerlib/src/main/java'
+    'src/main/java/libraries/pathplanner/pathplannerlib/src/main/java'
 ]
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
@@ -211,7 +213,7 @@ spotless {
     java {
         target fileTree(".") {
             include "**/*.java"
-            exclude "**/build/**", "**/build-*/**", "libraries/**"
+            exclude "**/build/**", "**/build-*/**", "bin/**", "src/main/java/libraries/**"
         }
         toggleOffOn()
         // eclipse().configFile("eclipse-formatter.xml")
@@ -222,7 +224,7 @@ spotless {
     groovyGradle {
         target fileTree(".") {
             include "**/*.gradle"
-            exclude "**/build/**", "**/build-*/**", "libraries/**"
+            exclude "**/build/**", "**/build-*/**", "bin/**", "src/main/java/libraries/**"
         }
         greclipse()
         indentWithSpaces(4)
@@ -232,14 +234,14 @@ spotless {
     json {
         target fileTree(".") {
             include "**/*.json"
-            exclude "**/build/**", "**/build-*/**", "libraries/**"
+            exclude "**/build/**", "**/build-*/**", "bin/**", "src/main/java/libraries/**"
         }
         gson().indentWithSpaces(2)
     }
     format "misc", {
         target fileTree(".") {
             include "**/*.md", "**/.gitignore"
-            exclude "**/build/**", "**/build-*/**", "libraries/**"
+            exclude "**/build/**", "**/build-*/**", "bin/**", "src/main/java/libraries/**"
         }
         trimTrailingWhitespace()
         indentWithSpaces(2)

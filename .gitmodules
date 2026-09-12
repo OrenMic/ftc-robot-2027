@@ -1,3 +1,3 @@
-[submodule "libraries/pathplanner"]
-	path = libraries/pathplanner
+[submodule "src/main/java/libraries/pathplanner"]
+	path = src/main/java/libraries/pathplanner
 	url = https://github.com/OrenMic/pathplanner.git
